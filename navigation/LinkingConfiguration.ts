@@ -6,10 +6,10 @@ export default {
     screens: {
       Root: {
         screens: {
-          ProductScreen: 'product'
+          ProductScreen: 'product',
+          NotFound: '*'
         }
       },
-      NotFound: '*'
     }
   }
 };

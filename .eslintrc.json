@@ -62,7 +62,7 @@
     "react/no-unescaped-entities": "error",
     "react/no-unused-prop-types": [2],
     "react/prop-types": [2],
-    "react/require-default-props": [2],
+    "react/require-default-props": [0],
     "react/self-closing-comp": "error",
     "react/style-prop-object": [2],
     "react/void-dom-elements-no-children": "error",

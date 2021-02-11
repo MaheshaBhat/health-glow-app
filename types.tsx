@@ -1,4 +1,4 @@
 export type RootStackParamList = {
-  Root: undefined;
+  Products: undefined;
   NotFound: undefined;
 };
