@@ -1,20 +1,22 @@
 import * as React from 'react';
 import { Text as DefaultText, View as DefaultView } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 
 import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
+// import useColorScheme from '../hooks/useColorScheme';
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
-) {
-  const theme = useColorScheme();
-  const colorFromProps = props[theme];
+): string {
+  const theme = useTheme();
+  const themeType = theme.dark ? 'dark' : 'light';
 
+  const colorFromProps = props[themeType];
   if (colorFromProps) {
     return colorFromProps;
   } else {
-    return Colors[theme][colorName];
+    return Colors[themeType][colorName] as string;
   }
 }
 

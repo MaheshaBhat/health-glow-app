@@ -1,16 +1,16 @@
 import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme
+  NavigationContainer, Theme
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { ColorSchemeName } from 'react-native';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
 import ProductsScreen from '../screens/ProductsScreen';
 import LinkingConfiguration from './LinkingConfiguration';
+import Colors, { themeType } from '../constants/Colors';
+import { AppContext } from '../context';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -19,11 +19,9 @@ export default function Navigation({
 }: {
   colorScheme: ColorSchemeName;
 }) {
+  const { theme } = useContext(AppContext);
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-    >
+    <NavigationContainer linking={LinkingConfiguration} theme={theme}>
       <RootNavigator />
     </NavigationContainer>
   );

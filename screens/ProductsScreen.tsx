@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import StyledText from '../components/StyledText';
+
 export default function ProductScreen() {
   return (
     <View style={styles.container}>
-      <Text>Products Screen</Text>
+      <StyledText>Products Screen</StyledText>
     </View>
   );
 }
