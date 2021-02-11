@@ -103,6 +103,7 @@
         "explicitSpread": "ignore"
       }
     ],
+    "import/prefer-default-export": 0,
     //"eslintreact/destructuring-assignment": 0,
     "global-require": 0
   },
