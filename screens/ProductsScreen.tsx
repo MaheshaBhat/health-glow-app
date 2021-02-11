@@ -1,10 +1,10 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 export default function ProductScreen() {
   return (
     <View style={styles.container}>
-      <Text>{"Products Screen"}</Text>
+      <Text>Products Screen</Text>
     </View>
   );
 }
@@ -12,7 +12,7 @@ export default function ProductScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
