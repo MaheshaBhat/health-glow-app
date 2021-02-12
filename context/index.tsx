@@ -6,11 +6,15 @@ import Colors from '../constants/Colors';
 
 export type contextType = {
   theme: Theme;
+  numOfCol?: number;
   setThemeType?: Function;
+  setNumOfCol: Function;
 };
 export const AppContext = createContext<contextType>({
   theme: Colors.light,
-  setThemeType: () => {}
+  setThemeType: () => {},
+  setNumOfCol: () => {},
+  numOfCol: 2
 });
 
 interface Props {
@@ -19,13 +23,16 @@ interface Props {
 export default (props: Props) => {
   const colorScheme = useColorScheme();
   const [themeType, setThemeType] = useState(colorScheme);
+  const [numOfCol, setNumOfCol] = useState(2);
   const { children } = props;
 
   return (
     <AppContext.Provider
       value={{
         theme: themeType === 'dark' ? Colors.dark : Colors.light,
-        setThemeType
+        setThemeType,
+        numOfCol,
+        setNumOfCol
       }}
     >
       {children}

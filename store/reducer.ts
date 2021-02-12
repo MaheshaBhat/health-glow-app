@@ -25,10 +25,9 @@ export function productReducer(state = initialState, action: ActionTypes): Syste
     }
     case SET_DATA: {
       const { totalCount, products } = action.payload;
-      const newProducts = state.products.concat(products);
       return {
         ...state,
-        products: newProducts,
+        products,
         totalCount
       };
     }

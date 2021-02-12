@@ -8,11 +8,12 @@ import {
 } from 'react-native';
 
 interface Props {
-  onPress: (event: GestureResponderEvent) => void;
+  onPress?: (event: GestureResponderEvent) => void;
   name: any;
   size: number;
   color: string;
   iconStyle?: StyleProp<TextStyle>;
+  isPressable?: boolean;
 }
 
 export default ({
@@ -20,10 +21,11 @@ export default ({
   name = 'menu',
   size = 15,
   color = 'black',
-  iconStyle = {}
+  iconStyle = {},
+  isPressable = false
 }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} disabled={isPressable}>
       <Ionicons name={name} size={size} color={color} style={iconStyle} />
     </TouchableOpacity>
   );

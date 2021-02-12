@@ -7,7 +7,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useContext } from 'react';
-import { ColorSchemeName, TouchableOpacity, View } from 'react-native';
+import { ColorSchemeName, TouchableOpacity, StatusBar } from 'react-native';
+import Constants from 'expo-constants';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
@@ -18,6 +19,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 import { AppContext } from '../context';
 import Icon from '../components/Icon';
 import SubHeader from '../components/SubHeader';
+import { View } from '../components/Themed';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -40,7 +42,7 @@ const HeaderLeft = () => {
     <TouchableOpacity onPress={() => dispatch(DrawerActions.toggleDrawer())}>
       <Ionicons
         name={'menu'}
-        size={50}
+        size={40}
         color={'#636363'}
         style={{ marginLeft: 12 }}
       />
@@ -90,9 +92,18 @@ function DrawerNavigator() {
           fontSize: 32,
           width: '85%'
         },
-        headerStyle: { elevation: 0 },
+        headerStyle: {
+          elevation: 0,
+          // backgroundColor: 'red',
+          height: 54,
+          width: '100%',
+          marginTop: Constants.statusBarHeight,
+          paddingTop: 0,
+          justifyContent: 'center',
+        },
         headerLeft: HeaderLeft,
-        headerRight: HeaderRight
+        headerRight: HeaderRight,
+        headerStatusBarHeight: 0
       }}
     >
       <Drawer.Screen name="Root" component={RootNavigator} />
@@ -107,8 +118,6 @@ function RootNavigator() {
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
-        // headerStyle: { height: 90 },
-        // headerTitle: SubHeader,
         header: SubHeader
       }}
     >

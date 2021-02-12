@@ -9,7 +9,7 @@ enum AverageRating {
   FOUR = 4,
   FIVE = 5
 
-};
+}
 export interface Product {
   brandUrlLink: string,
   categoryName: string,

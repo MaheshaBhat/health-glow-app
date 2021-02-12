@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { StackHeaderProps } from '@react-navigation/stack';
+import { Ionicons } from '@expo/vector-icons';
 
 import { View, Text } from '../Themed';
 import Icon from '../Icon';
+import { AppContext, contextType } from '../../context';
 
 export default function SubHeader({
   scene,
   previous,
   navigation
 }: StackHeaderProps) {
-  const { options } = scene.descriptor;
+  // const { options } = scene.descriptor;
+  const { numOfCol, setNumOfCol } = useContext<contextType>(AppContext);
 
   return (
     <View style={styles.container}>
@@ -23,14 +26,15 @@ export default function SubHeader({
         </Text>
       </View>
       <View style={styles.subContainerStyle}>
-        <View
+        <TouchableOpacity
           style={[
             styles.cardStyle,
-            { width: 40, height: 40, borderColor: '#f8f8f8' },
+            { width: 40, height: 40, borderColor: '#f8f8f8' }
           ]}
+          onPress={() => setNumOfCol(numOfCol === 2 ? 1 : 2)}
         >
-          <Icon name={'grid-outline'} size={15} onPress={() => {}} color={'#636363'} />
-        </View>
+          <Ionicons name={'grid-outline'} size={15} color={'#636363'} />
+        </TouchableOpacity>
         <TouchableOpacity style={[styles.btnStyle, styles.cardStyle]}>
           <Text style={styles.textStyle}>{'Sort'}</Text>
         </TouchableOpacity>
