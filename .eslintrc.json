@@ -91,7 +91,8 @@
         "js": "never",
         "jsx": "never",
         "ts": "never",
-        "tsx": "never"
+        "tsx": "never",
+        "native.js": "never"
       }
     ],
     "react-native/no-inline-styles": 0,
@@ -110,7 +111,7 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".native.js"]
       }
     },
     "react": {

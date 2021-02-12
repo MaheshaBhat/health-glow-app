@@ -1,2 +1,4 @@
-export const getList = (state: any) => state.list;
-export const getApiStatus = (state: any) => state.apiStatus;
+import { SystemState } from './types';
+
+export const getProducts = (state: SystemState) => state.products;
+export const getApiStatus = (state: SystemState) => state.apiStatus;

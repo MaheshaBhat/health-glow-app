@@ -1,15 +1,31 @@
 import { API_URL } from '../constants/Config';
 import statusCodes from './status-codes';
-import { setApiStatus } from '../store/actions';
+import { setApiStatus, setDataList } from '../store/actions';
 
-export async function fetchListService(dispatch: any) {
-    let result = [];
+
+async function fetchListService(dispatch: any) {
+    let res;
     try {
-        dispatch(setApiStatus(statusCodes.requesting));
-        result = await fetch(API_URL).then(response => response.json());
+        const result = await fetch(API_URL);
+        res = await result.json();
         dispatch(setApiStatus(statusCodes.successful));
     } catch (ex) {
         dispatch(setApiStatus(statusCodes.failed));
     }
-    return result;
+    return res?.data;
 }
+
+export const fetchList = () => {
+    return (dispatch: any) => {
+      return fetchListService(dispatch).then(
+        (products) => {
+          dispatch(setDataList(products));
+        },
+        (error) => {
+          // console.error(error);
+        }
+      ).catch(() => { });
+    };
+  };
+
+

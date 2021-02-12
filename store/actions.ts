@@ -1,23 +1,13 @@
 import { SET_API_STATUS, SET_DATA } from './actionTypes';
-import { fetchListService } from '../api-service';
+import { Product } from './types';
 
-export const setApiStatus = (data: any) => ({
+export const setApiStatus = (data: number) => ({
   type: SET_API_STATUS,
-  payload: { data }
+  payload: data
 });
 
-export const setDataList = (data: any) => ({
+export const setDataList = ({ totalCount, products }: { totalCount: number, products: Product[] }) => ({
   type: SET_DATA,
-  payload: { data },
+  payload: { totalCount, products  },
 });
 
-export const fetchList = () => {
-  return (dispatch: any) => {
-    return fetchListService(dispatch).then(
-      (list) => dispatch(setDataList(list)),
-      (error) => {
-        // console.error(error);
-      }
-    );
-  };
-};
