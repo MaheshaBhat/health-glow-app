@@ -2,12 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import AppProvider from './context';
 import store from './store';
+
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -20,10 +22,12 @@ export default function App() {
       <SafeAreaProvider>
         <Provider store={store}>
           <AppProvider>
-            <>
-              <StatusBar />
-              <Navigation colorScheme={colorScheme} />
-            </>
+            <ActionSheetProvider>
+              <>
+                <StatusBar />
+                <Navigation colorScheme={colorScheme} />
+              </>
+            </ActionSheetProvider>
           </AppProvider>
         </Provider>
       </SafeAreaProvider>

@@ -89,7 +89,7 @@ function DrawerNavigator() {
         headerTitle: 'health & glow',
         headerTitleStyle: {
           color: '#f37920',
-          fontSize: 32,
+          fontSize: 30,
           width: '85%'
         },
         headerStyle: {

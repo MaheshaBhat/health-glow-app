@@ -10,7 +10,7 @@ interface setApiStatusAction {
 
 interface setDataListAction {
     type: typeof SET_DATA,
-    payload: { totalCount: number, products: Product[] },
+    payload: { totalCount: number, products: Product[], sortBy: string },
 }
 
 

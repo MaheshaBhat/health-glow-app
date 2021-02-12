@@ -40,6 +40,7 @@ export interface SystemState {
   userName: string;
   apiStatus: number;
   products: Product[],
-  totalCount: number
+  totalCount: number,
+  sortBy: string,
 }
 

@@ -1,11 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { StackHeaderProps } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
+import { useActionSheet } from '@expo/react-native-action-sheet';
+import { useDispatch } from 'react-redux';
 
 import { View, Text } from '../Themed';
-import Icon from '../Icon';
 import { AppContext, contextType } from '../../context';
+import { getSortBy, SortConfig } from '../../constants/Config';
+import { fetchList } from '../../api-service';
 
 export default function SubHeader({
   scene,
@@ -13,7 +16,46 @@ export default function SubHeader({
   navigation
 }: StackHeaderProps) {
   // const { options } = scene.descriptor;
-  const { numOfCol, setNumOfCol } = useContext<contextType>(AppContext);
+  const { numOfCol, setNumOfCol, theme } = useContext<contextType>(AppContext);
+  const { showActionSheetWithOptions } = useActionSheet();
+  const dispatch = useDispatch();
+
+  const onOpenActionSheet = useCallback(() => {
+    const options = [
+      SortConfig.Popularity,
+      SortConfig.Discount,
+      SortConfig.HighToLow,
+      SortConfig.LowToHigh,
+      'Close'
+    ];
+    // const destructiveButtonIndex = 0;
+    const cancelButtonIndex = 4;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        destructiveButtonIndex: 4,
+        destructiveColor: 'grey',
+        containerStyle: {
+          alignItems: 'center',
+          backgroundColor: theme.colors.background,
+          justifyContent: 'center'
+        },
+        textStyle: { textAlign: 'center', color: theme.colors.text }
+      },
+      (sortIndex) => {
+        if (sortIndex !== 4) {
+          dispatch(fetchList(getSortBy(sortIndex)));
+        }
+      }
+    );
+  }, [
+    dispatch,
+    showActionSheetWithOptions,
+    theme.colors.background,
+    theme.colors.text
+  ]);
 
   return (
     <View style={styles.container}>
@@ -27,15 +69,15 @@ export default function SubHeader({
       </View>
       <View style={styles.subContainerStyle}>
         <TouchableOpacity
-          style={[
-            styles.cardStyle,
-            { width: 40, height: 40, borderColor: '#f8f8f8' }
-          ]}
+          style={[styles.cardStyle, { width: 40, height: 40 }]}
           onPress={() => setNumOfCol(numOfCol === 2 ? 1 : 2)}
         >
           <Ionicons name={'grid-outline'} size={15} color={'#636363'} />
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.btnStyle, styles.cardStyle]}>
+        <TouchableOpacity
+          style={[styles.btnStyle, styles.cardStyle]}
+          onPress={onOpenActionSheet}
+        >
           <Text style={styles.textStyle}>{'Sort'}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.btnStyle, styles.cardStyle]}>
@@ -60,12 +102,11 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textStyle: {
-    fontSize: 15,
-    color: '#000000'
+    fontSize: 15
   },
   btnStyle: {
     height: 40,
-    width: 90,
+    width: '30%',
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 5

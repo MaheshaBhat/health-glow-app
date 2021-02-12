@@ -9,7 +9,8 @@ const initialState: SystemState = {
   session: '',
   userName: 'Mahesha',
   products: [],
-  totalCount: 0
+  totalCount: 0,
+  sortBy: '',
 };
 
 
@@ -24,11 +25,12 @@ export function productReducer(state = initialState, action: ActionTypes): Syste
       };
     }
     case SET_DATA: {
-      const { totalCount, products } = action.payload;
+      const { totalCount, products, sortBy } = action.payload;
       return {
         ...state,
         products,
-        totalCount
+        totalCount,
+        sortBy: (sortBy || ''),
       };
     }
 
