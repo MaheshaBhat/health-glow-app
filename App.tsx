@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { ActivityIndicator, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import useCachedResources from './hooks/useCachedResources';
@@ -9,11 +10,12 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import AppProvider from './context';
 import store from './store';
-
+import Loader from './components/Loader';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+
 
   if (!isLoadingComplete) {
     return null;
@@ -26,6 +28,7 @@ export default function App() {
               <>
                 <StatusBar />
                 <Navigation colorScheme={colorScheme} />
+                <Loader />
               </>
             </ActionSheetProvider>
           </AppProvider>

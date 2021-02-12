@@ -1,5 +1,11 @@
-import React, { useEffect, useCallback, useContext } from 'react';
-import { StyleSheet, ScrollView, FlatList, StatusBar } from 'react-native';
+import React, {
+  useEffect,
+  useCallback,
+  useContext,
+  useRef,
+  useState
+} from 'react';
+import { StyleSheet, FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 // import { useHeaderHeight } from '@react-navigation/stack';
 import Constants from 'expo-constants';
@@ -18,12 +24,16 @@ const ITEM_HEIGHT = CAROUSEL_HEIGHT / 2;
 export default function ProductScreen() {
   const dispatch = useDispatch();
   const products = useSelector(getProducts);
-
+  const page = useRef(1);
+  const onEndReachedCalledDuringMomentum = useRef(true);
+  true;
   // console.log(useHeaderHeight());
 
   useEffect(() => {
-    dispatch(fetchList());
-  }, [dispatch]);
+    onEndReachedCalledDuringMomentum.current = true;
+    page.current = 1;
+    dispatch(fetchList(page.current));
+  }, [dispatch, page]);
 
   const renderItem = useCallback(
     ({ item, index }) => (
@@ -44,6 +54,17 @@ export default function ProductScreen() {
     }),
     []
   );
+  const onEndReached = useCallback(
+    ({ distanceFromEnd }) => {
+      if (!onEndReachedCalledDuringMomentum.current) {
+        page.current += page.current;
+        dispatch(fetchList(page.current));
+        onEndReachedCalledDuringMomentum.current = true;
+      }
+    },
+    [dispatch, page]
+  );
+
   const { numOfCol } = useContext<contextType>(AppContext);
   return (
     // <SafeAreaView style={styles.flatList}>
@@ -57,7 +78,13 @@ export default function ProductScreen() {
         numColumns={numOfCol}
         scrollEnabled
         horizontal={false}
+        getItemLayout={getItemLayout}
         extraData={numOfCol}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.75}
+        onMomentumScrollBegin={() => {
+          onEndReachedCalledDuringMomentum.current = false;
+        }}
       />
     </View>
   );

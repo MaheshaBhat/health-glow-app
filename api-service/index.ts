@@ -2,17 +2,18 @@ import { API_URL, getOrder } from '../constants/Config';
 import statusCodes from './status-codes';
 import { setApiStatus, setDataList } from '../store/actions';
 
-const getUrl = (sortBy: string, url: string) => {
-  const searchParams: string = `${url}&${new URLSearchParams({ 'sort': getOrder(sortBy) }).toString()}`;
+const getUrl = (page: number, url: string, sortBy?: string) => {
+  let searchParams: string = `${url}&page=${20 * (page - 1)}:${20 * page}`;
+  if (sortBy) {
+    searchParams += `&${new URLSearchParams({ 'sort': getOrder(sortBy) }).toString()}`;
+  }
   return searchParams;
 };
-async function fetchListService(dispatch: any, sortBy: string) {
+async function fetchListService(page: number, dispatch: any, sortBy?: string) {
   let res;
   try {
-    let url: string = API_URL;
-    if (sortBy) {
-      url = getUrl(sortBy, API_URL);
-    }
+    dispatch(setApiStatus(statusCodes.requesting));
+    const url: string = getUrl(page, API_URL, sortBy);
     const result = await fetch(encodeURI(url));
     res = await result.json();
     dispatch(setApiStatus(statusCodes.successful));
@@ -22,9 +23,9 @@ async function fetchListService(dispatch: any, sortBy: string) {
   return res?.data;
 }
 
-export const fetchList = (sortBy: string) => {
+export const fetchList = (page: number, sortBy?: string) => {
   return (dispatch: any) => {
-    return fetchListService(dispatch, sortBy).then(
+    return fetchListService(page, dispatch, sortBy).then(
       (products) => {
         dispatch(setDataList(products, sortBy));
       },

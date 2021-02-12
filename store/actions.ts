@@ -6,7 +6,7 @@ export const setApiStatus = (data: number) => ({
   payload: data
 });
 
-export const setDataList = ({ totalCount, products }: { totalCount: number, products: Product[] }, sortBy: string) => ({
+export const setDataList = ({ totalCount, products }: { totalCount: number, products: Product[] }, sortBy?: string) => ({
   type: SET_DATA,
   payload: { totalCount, products, sortBy },
 });

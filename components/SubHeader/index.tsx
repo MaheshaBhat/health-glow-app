@@ -3,12 +3,13 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { StackHeaderProps } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { useActionSheet } from '@expo/react-native-action-sheet';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { View, Text } from '../Themed';
 import { AppContext, contextType } from '../../context';
 import { getSortBy, SortConfig } from '../../constants/Config';
 import { fetchList } from '../../api-service';
+import { getTotalCount } from '../../store/getters';
 
 export default function SubHeader({
   scene,
@@ -18,6 +19,7 @@ export default function SubHeader({
   // const { options } = scene.descriptor;
   const { numOfCol, setNumOfCol, theme } = useContext<contextType>(AppContext);
   const { showActionSheetWithOptions } = useActionSheet();
+  const totalNumOfProducts = useSelector(getTotalCount);
   const dispatch = useDispatch();
 
   const onOpenActionSheet = useCallback(() => {
@@ -42,11 +44,15 @@ export default function SubHeader({
           backgroundColor: theme.colors.background,
           justifyContent: 'center'
         },
-        textStyle: { textAlign: 'center', color: theme.colors.text }
+        textStyle: {
+          textAlign: 'center',
+          color: theme.colors.text,
+          width: '100%'
+        }
       },
       (sortIndex) => {
         if (sortIndex !== 4) {
-          dispatch(fetchList(getSortBy(sortIndex)));
+          dispatch(fetchList(1, getSortBy(sortIndex)));
         }
       }
     );
@@ -63,7 +69,7 @@ export default function SubHeader({
         <Text style={styles.textStyle}>
           {"L'Oreal Paris - "}
           <Text style={[styles.textStyle, { color: '#9b9b9b' }]}>
-            {'9 products'}
+            {`${totalNumOfProducts} products`}
           </Text>
         </Text>
       </View>
