@@ -16,7 +16,7 @@ import ProductsScreen from '../screens/ProductsScreen';
 import LinkingConfiguration from './LinkingConfiguration';
 
 // import Colors, { themeType } from '../constants/Colors';
-import { AppContext } from '../context';
+import { AppContext, contextType } from '../context';
 import Icon from '../components/Icon';
 import SubHeader from '../components/SubHeader';
 import { View } from '../components/Themed';
@@ -24,6 +24,9 @@ import FilterScreen from '../screens/FilterScreen';
 import Header from '../components/Header';
 import FilterHeader from '../components/FilterHeader';
 import DrawerContent from '../components/DrawerContent';
+import SearchScreen from '../screens/SearchScreen';
+import HomeScreen from '../screens/HomeScreen';
+import Logo from '../components/Logo';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -54,8 +57,9 @@ const HeaderLeft = () => {
   );
 };
 
-const HeaderRight = () => {
-  const { dispatch } = useNavigation();
+const HeaderRight = (props: any) => {
+  const navigation = useNavigation();
+
   return (
     <View style={{ flexDirection: 'row' }}>
       <Icon
@@ -69,7 +73,7 @@ const HeaderRight = () => {
         name={'search-outline'}
         size={30}
         color={'#636363'}
-        onPress={() => {}}
+        onPress={() => navigation.navigate('Search')}
         iconStyle={{ marginRight: 5 }}
       />
       <Icon
@@ -90,12 +94,12 @@ function DrawerNavigator() {
     <Drawer.Navigator
       screenOptions={{
         headerShown: true,
-        headerTitle: 'health & glow',
-        headerTitleStyle: {
-          color: '#f37920',
-          fontSize: 30,
-          width: '85%'
-        },
+        headerTitle: () => <Logo />,
+        // headerTitleStyle: {
+        //   color: '#f37920',
+        //   fontSize: 30,
+        //   width: '85%'
+        // },
         headerStyle: {
           elevation: 0,
           // backgroundColor: 'red',
@@ -106,18 +110,19 @@ function DrawerNavigator() {
           justifyContent: 'center'
         },
         headerLeft: HeaderLeft,
-        headerRight: HeaderRight,
+        headerRight: (props) => <HeaderRight {...props} />,
         headerStatusBarHeight: 0
       }}
-      drawerContent={DrawerContent}
+      drawerContent={(props) => <DrawerContent {...props} />}
     >
       <Drawer.Screen name="Root" component={RootNavigator} />
+      <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen
         name="Filter"
-        initialParams={{ selectedFil: [] }}
         component={FilterScreen}
+        initialParams={{ reset: false }}
         options={{
-          header: FilterHeader
+          header: (props) => <FilterHeader {...props} />
         }}
       />
     </Drawer.Navigator>
@@ -130,10 +135,15 @@ function RootNavigator() {
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
-        header: SubHeader
+        header: (props) => <SubHeader {...props} />
       }}
     >
       <Stack.Screen name="Products" component={ProductsScreen} />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}

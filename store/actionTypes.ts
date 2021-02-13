@@ -1,4 +1,4 @@
-import { SystemState, Product, Aggregation, Sort } from './types';
+import { SystemState, Product, Aggregation, Sort, Order } from './types';
 
 export const SET_API_STATUS = 'setApiStatus';
 export const SET_DATA = 'setData';
@@ -10,11 +10,12 @@ interface setApiStatusAction {
 
 interface setDataListAction {
     type: typeof SET_DATA,
-    payload: { totalCount: number, products: Product[], aggregation: Aggregation[], sortList: Sort[], title: string, sortBy: string, selectedFilter: string[] },
+    payload: { page: number, totalCount: number, products: Product[], aggregations: Aggregation[], sorts: Sort[], title: string, sortBy: Order, selectedFilter: string[], isFilter?: boolean },
 }
 
 interface clearFilterAction {
     type: typeof CLEAR_FILTER,
+    payload: boolean
 }
 
 

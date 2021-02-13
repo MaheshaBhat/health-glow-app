@@ -64,10 +64,10 @@ export interface SystemState {
   apiStatus: number;
   products: Product[],
   totalCount: number,
-  sortBy: string,
+  sortBy: Order,
   selectedFilter: string[],
-  aggregation: Aggregation[],
-  sortList: Sort[],
-  title: string
-}
+  aggregations: Aggregation[],
+  sorts: Order[],
+  title: string,
+  page: number,}
 

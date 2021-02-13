@@ -6,7 +6,7 @@ export const getTotalCount = (state: SystemState) => state.totalCount;
 export const getSortBy = (state: SystemState) => state.sortBy;
 export const getSelectedFilter = (state: SystemState) => state.selectedFilter;
 export const getSortFilter = ({ selectedFilter, sortBy }: SystemState) => ({ selectedFilter, sortBy });
-export const getAggregation = (state: SystemState) => state.aggregation;
-export const getSortList = (state: SystemState) => state.sortList;
+export const getAggregation = (state: SystemState) => state.aggregations;
+export const getSortList = (state: SystemState) => state.sorts;
 export const getTitle = (state: SystemState) => state.title;
 

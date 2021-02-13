@@ -9,7 +9,12 @@ import { View, Text } from '../Themed';
 import { AppContext, contextType } from '../../context';
 import { getSortBy, SortConfig } from '../../constants/Config';
 import { fetchList } from '../../api-service';
-import { getSortList, getTitle, getTotalCount } from '../../store/getters';
+import {
+  getSelectedFilter,
+  getSortList,
+  getTitle,
+  getTotalCount
+} from '../../store/getters';
 
 export default function SubHeader({
   scene,
@@ -21,18 +26,12 @@ export default function SubHeader({
   const { showActionSheetWithOptions } = useActionSheet();
   const totalNumOfProducts = useSelector(getTotalCount);
   const title = useSelector(getTitle);
-  const sortList = useSelector(getSortList);
-  console.log(sortList);
+  const sorts = useSelector(getSortList);
+  const selectedFilter = useSelector(getSelectedFilter);
   const dispatch = useDispatch();
 
   const onOpenActionSheet = useCallback(() => {
-    const options = [
-      SortConfig.Popularity,
-      SortConfig.Discount,
-      SortConfig.HighToLow,
-      SortConfig.LowToHigh,
-      'Close'
-    ];
+    const options = [...sorts.map((s) => s.text), 'Close'];
     // const destructiveButtonIndex = 0;
     const cancelButtonIndex = 4;
 
@@ -55,13 +54,15 @@ export default function SubHeader({
       },
       (sortIndex) => {
         if (sortIndex !== 4) {
-          dispatch(fetchList(1, getSortBy(sortIndex)));
+          dispatch(fetchList(1, sorts[sortIndex], selectedFilter));
         }
       }
     );
   }, [
     dispatch,
+    selectedFilter,
     showActionSheetWithOptions,
+    sorts,
     theme.colors.background,
     theme.colors.text
   ]);
@@ -70,7 +71,7 @@ export default function SubHeader({
     <View style={styles.container}>
       <View style={styles.subContainerStyle}>
         <Text style={styles.textStyle}>
-          {`${title} - `}
+          {title && `${title} - `}
           <Text style={[styles.textStyle, { color: '#9b9b9b' }]}>
             {`${totalNumOfProducts} products`}
           </Text>
@@ -96,6 +97,11 @@ export default function SubHeader({
           <Text style={styles.textStyle}>{'Filter'}</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.deliveryStyle}>
+        <Ionicons color="#000" name="location-outline" size={20} />
+        <Text style={{ paddingHorizontal: '1%' }}>{'Deliver To 560097'}</Text>
+        <Ionicons color="#000" name="arrow-down" size={20} />
+      </View>
     </View>
   );
 }
@@ -104,7 +110,10 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 8
+    zIndex: 8,
+    borderBottomColor: '#b4b4b4',
+    borderBottomWidth: 1,
+    elevation: 10
   },
   subContainerStyle: {
     flexDirection: 'row',
@@ -128,5 +137,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  deliveryStyle: {
+    height: 32,
+    width: '100%',
+    alignItems: 'center',
+    paddingLeft: '2%',
+    flexDirection: 'row',
+    borderTopColor: '#b4b4b4',
+    borderTopWidth: 1
   }
 });

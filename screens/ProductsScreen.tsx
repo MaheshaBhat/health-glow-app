@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Constants from 'expo-constants';
 
 import { View, Text } from '../components/Themed';
-import { getProducts, getSortFilter } from '../store/getters';
+import { getProducts, getSortFilter, getTotalCount } from '../store/getters';
 import { fetchList } from '../api-service';
 import ProductItem from '../components/Product';
 import layout from '../constants/Layout';
@@ -24,16 +24,17 @@ const ITEM_HEIGHT = CAROUSEL_HEIGHT / 2;
 export default function ProductScreen() {
   const dispatch = useDispatch();
   const products = useSelector(getProducts);
+  const totalCount = useSelector(getTotalCount);
   const page = useRef(1);
   const onEndReachedCalledDuringMomentum = useRef(true);
   const { sortBy, selectedFilter } = useSelector(getSortFilter);
-  // console.log(useHeaderHeight());
 
   useEffect(() => {
     onEndReachedCalledDuringMomentum.current = true;
     page.current = 1;
-    dispatch(fetchList(page.current, sortBy, selectedFilter));
-  }, [dispatch, page, selectedFilter, sortBy]);
+    dispatch(fetchList(page.current, sortBy, []));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderItem = useCallback(
     ({ item, index }) => (
@@ -56,13 +57,16 @@ export default function ProductScreen() {
   );
   const onEndReached = useCallback(
     ({ distanceFromEnd }) => {
-      if (!onEndReachedCalledDuringMomentum.current) {
+      if (
+        !onEndReachedCalledDuringMomentum.current &&
+        page.current * 20 <= totalCount
+      ) {
         page.current += page.current;
         dispatch(fetchList(page.current, sortBy, selectedFilter));
         onEndReachedCalledDuringMomentum.current = true;
       }
     },
-    [dispatch, selectedFilter, sortBy]
+    [dispatch, selectedFilter, sortBy, totalCount]
   );
 
   const { numOfCol } = useContext<contextType>(AppContext);
@@ -71,7 +75,7 @@ export default function ProductScreen() {
     <View style={styles.flatList}>
       <FlatList
         renderItem={renderItem}
-        data={products}
+        data={products || []}
         key={numOfCol === 2 ? '##' : '#'}
         keyExtractor={(item) => item?.skuId}
         contentContainerStyle={styles.container}
@@ -85,6 +89,7 @@ export default function ProductScreen() {
         onMomentumScrollBegin={() => {
           onEndReachedCalledDuringMomentum.current = false;
         }}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

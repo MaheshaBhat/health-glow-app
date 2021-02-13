@@ -1,20 +1,35 @@
 import { API_URL, getOrder } from '../constants/Config';
 import statusCodes from './status-codes';
 import { setApiStatus, setDataList } from '../store/actions';
+import { Order } from '../store/types';
 
-const getUrl = (page: number, url: string, sortBy?: string, selectedFilter?: string[]) => {
-  let searchParams: string = `${url}&page=${30 * (page - 1)}:30`;
-  if (sortBy) {
-    searchParams += `&${new URLSearchParams({ 'sort': getOrder(sortBy) }).toString()}`;
+const getUrl = (page: number, url: string, sortBy?: Order, selectedFilter?: string[]) => {
+  let searchParams: string = `${url}&page=${20 * (page - 1)}:20`;
+  if (sortBy?.key) {
+    searchParams += `&${new URLSearchParams({ 'sort': `${sortBy.key}:${sortBy.order}` }).toString()}`;
   }
   if (selectedFilter?.length) {
-    searchParams += `&${selectedFilter.toString().replace(',', '&')}`;
+    const newfilter = selectedFilter.map((ele) => {
+      let str = '';
+      if (ele.includes('price')) {
+        // eslint-disable-next-line radix
+        str = ele.replace('price=', ' ').split('-').map(el => parseInt(el)).join(':');
+        return `price=${str}`;
+      }
+      if (ele.includes('offer')) {
+        // eslint-disable-next-line radix
+        str = ele.replace('offer=', ' ').split('-').map(el => parseInt(el)).join(':');
+        return `offer=${str}`;
+      }
+      return ele;
+    });
+    searchParams += `&${newfilter.join('&')}`;
   }
   // console.log(searchParams);
   return searchParams;
 };
 
-async function fetchListService(page: number, dispatch: any, sortBy?: string, selectedFilter?: string[]) {
+async function fetchListService(page: number, dispatch: any, sortBy?: Order, selectedFilter?: string[]) {
   let res;
   try {
     dispatch(setApiStatus(statusCodes.requesting));
@@ -28,11 +43,11 @@ async function fetchListService(page: number, dispatch: any, sortBy?: string, se
   return res?.data;
 }
 
-export const fetchList = (page: number, sortBy?: string, selectedFilter?: string[]) => {
+export const fetchList = (page: number, sortBy?: Order, selectedFilter?: string[], isFilter?: boolean) => {
   return (dispatch: any) => {
     return fetchListService(page, dispatch, sortBy, selectedFilter).then(
-      (products) => {
-        dispatch(setDataList(products, sortBy, selectedFilter));
+      (res) => {
+        dispatch(setDataList(page, res, sortBy, selectedFilter, isFilter));
       },
       (error) => {
         // console.error(error);
@@ -40,5 +55,4 @@ export const fetchList = (page: number, sortBy?: string, selectedFilter?: string
     ).catch(() => { });
   };
 };
-
 

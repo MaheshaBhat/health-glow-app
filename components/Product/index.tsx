@@ -24,7 +24,7 @@ export default function ProductItem({ prod, index, height }: Props) {
         {
           height,
           width: numOfCol === 2 ? '50%' : '100%',
-          borderLeftWidth: index % 2 === 0 || numOfCol === 1 ? 0 : 1,
+          borderRightWidth: index % 2 === 1 || numOfCol === 1 ? 0 : 1,
           backgroundColor: theme.colors.background
         }
       ]}
@@ -106,8 +106,8 @@ export default function ProductItem({ prod, index, height }: Props) {
 const styles = StyleSheet.create({
   container: {
     // height: 350,
-    borderLeftColor: '#e3e3e3',
-    borderLeftWidth: 1,
+    borderRightColor: '#e3e3e3',
+    borderRightWidth: 1,
     borderBottomColor: '#e3e3e3',
     borderBottomWidth: 1,
     padding: '2.5%',

@@ -1,13 +1,17 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { clearFilter } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Icon from '../Icon';
 import { View, Text } from '../Themed';
+import { fetchList } from '../../api-service';
+import { getSortBy } from '../../store/getters';
 
 const FilterHeader = ({ scene }: any) => {
   const { navigation } = scene.descriptor;
+  const dispatch = useDispatch();
+  const sortBy = useSelector(getSortBy);
 
   return (
     <SafeAreaView>
@@ -20,7 +24,10 @@ const FilterHeader = ({ scene }: any) => {
         />
         <Text>Filter By</Text>
         <TouchableOpacity
-          onPress={() => navigation.setParams({ selectedFil: [] })}
+          onPress={async () => {
+            await dispatch(fetchList(1, sortBy, []));
+            navigation.setParams({ reset: true });
+          }}
         >
           <Text style={{ color: '#f57b02' }}>Clear All</Text>
         </TouchableOpacity>

@@ -8,6 +8,7 @@ export default {
         screens: {
           ProductScreen: 'product',
           NotFound: '*',
+          Search: 'Search',
           Filter: 'filter',
         }
       },

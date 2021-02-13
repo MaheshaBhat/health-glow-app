@@ -7,7 +7,7 @@ import Colors from '../constants/Colors';
 export type contextType = {
   theme: Theme;
   numOfCol?: number;
-  setThemeType?: Function;
+  setThemeType: Function;
   setNumOfCol: Function;
   clearAllFilter?: Function;
   setClearAll?: Function;
