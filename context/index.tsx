@@ -9,12 +9,16 @@ export type contextType = {
   numOfCol?: number;
   setThemeType?: Function;
   setNumOfCol: Function;
+  clearAllFilter?: Function;
+  setClearAll?: Function;
 };
 export const AppContext = createContext<contextType>({
   theme: Colors.light,
   setThemeType: () => {},
   setNumOfCol: () => {},
-  numOfCol: 2
+  numOfCol: 2,
+  clearAllFilter: () => {},
+  setClearAll: () => {}
 });
 
 interface Props {
@@ -25,6 +29,7 @@ export default (props: Props) => {
   const [themeType, setThemeType] = useState(colorScheme);
   const [numOfCol, setNumOfCol] = useState(2);
   const { children } = props;
+  const [clearAllFilter, setClearAll] = useState(Function);
 
   return (
     <AppContext.Provider
@@ -32,7 +37,9 @@ export default (props: Props) => {
         theme: themeType === 'dark' ? Colors.dark : Colors.light,
         setThemeType,
         numOfCol,
-        setNumOfCol
+        setNumOfCol,
+        clearAllFilter,
+        setClearAll
       }}
     >
       {children}

@@ -7,7 +7,8 @@ export default {
       Root: {
         screens: {
           ProductScreen: 'product',
-          NotFound: '*'
+          NotFound: '*',
+          Filter: 'filter',
         }
       },
     }

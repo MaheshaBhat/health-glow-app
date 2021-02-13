@@ -9,7 +9,7 @@ import { View, Text } from '../Themed';
 import { AppContext, contextType } from '../../context';
 import { getSortBy, SortConfig } from '../../constants/Config';
 import { fetchList } from '../../api-service';
-import { getTotalCount } from '../../store/getters';
+import { getSortList, getTitle, getTotalCount } from '../../store/getters';
 
 export default function SubHeader({
   scene,
@@ -20,6 +20,9 @@ export default function SubHeader({
   const { numOfCol, setNumOfCol, theme } = useContext<contextType>(AppContext);
   const { showActionSheetWithOptions } = useActionSheet();
   const totalNumOfProducts = useSelector(getTotalCount);
+  const title = useSelector(getTitle);
+  const sortList = useSelector(getSortList);
+  console.log(sortList);
   const dispatch = useDispatch();
 
   const onOpenActionSheet = useCallback(() => {
@@ -67,7 +70,7 @@ export default function SubHeader({
     <View style={styles.container}>
       <View style={styles.subContainerStyle}>
         <Text style={styles.textStyle}>
-          {"L'Oreal Paris - "}
+          {`${title} - `}
           <Text style={[styles.textStyle, { color: '#9b9b9b' }]}>
             {`${totalNumOfProducts} products`}
           </Text>
@@ -86,7 +89,10 @@ export default function SubHeader({
         >
           <Text style={styles.textStyle}>{'Sort'}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.btnStyle, styles.cardStyle]}>
+        <TouchableOpacity
+          style={[styles.btnStyle, styles.cardStyle]}
+          onPress={() => navigation.navigate('Filter')}
+        >
           <Text style={styles.textStyle}>{'Filter'}</Text>
         </TouchableOpacity>
       </View>

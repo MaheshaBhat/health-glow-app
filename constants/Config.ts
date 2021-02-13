@@ -30,4 +30,28 @@ export const getOrder = (type) => {
     }
 };
 
+export enum FilterType {
+    CATEGORY = 'Category',
+    BRAND = 'Brand',
+    GENDER = 'Gender',
+    PRICE = 'Price',
+    OFFER = 'Offer',
+    SHADE = 'Shade',
+    LOOK = 'Look',
+    FINISH = 'Finish',
+    AVAILABILITY = 'Availability'
+
+}
+export const FilterConfig = {
+    [FilterType.CATEGORY]: ['Lipstick', 'Hair colours', 'Shampoo'],
+    [FilterType.BRAND]: ['loreal-paris'],
+    [FilterType.GENDER]: ['Women', 'Unisex', 'Men'],
+    [FilterType.PRICE]: ['1:250', '250:500'],
+    [FilterType.OFFER]: ['Special Offer'],
+    [FilterType.SHADE]: [],
+    [FilterType.LOOK]: [],
+    [FilterType.FINISH]: [],
+    [FilterType.AVAILABILITY]: [],
+};
+
 

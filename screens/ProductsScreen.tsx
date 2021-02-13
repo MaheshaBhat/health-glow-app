@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Constants from 'expo-constants';
 
 import { View, Text } from '../components/Themed';
-import { getProducts } from '../store/getters';
+import { getProducts, getSortFilter } from '../store/getters';
 import { fetchList } from '../api-service';
 import ProductItem from '../components/Product';
 import layout from '../constants/Layout';
@@ -26,14 +26,14 @@ export default function ProductScreen() {
   const products = useSelector(getProducts);
   const page = useRef(1);
   const onEndReachedCalledDuringMomentum = useRef(true);
-  true;
+  const { sortBy, selectedFilter } = useSelector(getSortFilter);
   // console.log(useHeaderHeight());
 
   useEffect(() => {
     onEndReachedCalledDuringMomentum.current = true;
     page.current = 1;
-    dispatch(fetchList(page.current));
-  }, [dispatch, page]);
+    dispatch(fetchList(page.current, sortBy, selectedFilter));
+  }, [dispatch, page, selectedFilter, sortBy]);
 
   const renderItem = useCallback(
     ({ item, index }) => (
@@ -58,11 +58,11 @@ export default function ProductScreen() {
     ({ distanceFromEnd }) => {
       if (!onEndReachedCalledDuringMomentum.current) {
         page.current += page.current;
-        dispatch(fetchList(page.current));
+        dispatch(fetchList(page.current, sortBy, selectedFilter));
         onEndReachedCalledDuringMomentum.current = true;
       }
     },
-    [dispatch, page]
+    [dispatch, selectedFilter, sortBy]
   );
 
   const { numOfCol } = useContext<contextType>(AppContext);

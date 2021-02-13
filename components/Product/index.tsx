@@ -15,7 +15,7 @@ interface Props {
   height: number;
 }
 export default function ProductItem({ prod, index, height }: Props) {
-  const [isFavorite, setFavorite] = useState(false);
+  const [isFavorite, setFavorite] = useState(prod.inWishList);
   const { numOfCol, theme } = useContext<contextType>(AppContext);
   return (
     <View

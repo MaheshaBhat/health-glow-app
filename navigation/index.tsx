@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useContext } from 'react';
-import { ColorSchemeName, TouchableOpacity, StatusBar } from 'react-native';
+import { ColorSchemeName, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -20,6 +20,10 @@ import { AppContext } from '../context';
 import Icon from '../components/Icon';
 import SubHeader from '../components/SubHeader';
 import { View } from '../components/Themed';
+import FilterScreen from '../screens/FilterScreen';
+import Header from '../components/Header';
+import FilterHeader from '../components/FilterHeader';
+import DrawerContent from '../components/DrawerContent';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -99,15 +103,23 @@ function DrawerNavigator() {
           width: '100%',
           marginTop: Constants.statusBarHeight,
           paddingTop: 0,
-          justifyContent: 'center',
+          justifyContent: 'center'
         },
         headerLeft: HeaderLeft,
         headerRight: HeaderRight,
         headerStatusBarHeight: 0
       }}
+      drawerContent={DrawerContent}
     >
       <Drawer.Screen name="Root" component={RootNavigator} />
-      {/* <Drawer.Screen name="Article" component={Article} /> */}
+      <Drawer.Screen
+        name="Filter"
+        initialParams={{ selectedFil: [] }}
+        component={FilterScreen}
+        options={{
+          header: FilterHeader
+        }}
+      />
     </Drawer.Navigator>
   );
 }

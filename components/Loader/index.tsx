@@ -11,7 +11,7 @@ export default function Loader() {
   if (apiStatus !== statusCodes.requesting) return null;
   return (
     <ActivityIndicator
-      size={Platform.OS !== 'ios' ? 100 : 'large'}
+      size={Platform.OS !== 'ios' ? 50 : 'large'}
       color="#f37920"
       style={{
         position: 'absolute',

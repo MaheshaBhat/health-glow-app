@@ -34,6 +34,29 @@ export interface Product {
   tagImageUrlGrid?: string,
   tagImageUrlList?: string,
 }
+
+export interface Bucket {
+  docCount: number,
+  isSelected: boolean,
+  key: string,
+  showDocCount: boolean,
+  text: string,
+}
+export interface Aggregation {
+  buckets: Bucket[],
+  isForMultiSelection: boolean,
+  name: string,
+  text: string,
+}
+export interface Order {
+  text: string, isSelected: boolean, key: string, order: string
+}
+
+export interface Sort {
+  name: string,
+  orders: Order[],
+  text: string,
+}
 export interface SystemState {
   loggedIn: boolean;
   session: string;
@@ -42,5 +65,9 @@ export interface SystemState {
   products: Product[],
   totalCount: number,
   sortBy: string,
+  selectedFilter: string[],
+  aggregation: Aggregation[],
+  sortList: Sort[],
+  title: string
 }
 
