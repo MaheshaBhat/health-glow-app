@@ -69,5 +69,7 @@ export interface SystemState {
   aggregations: Aggregation[],
   sorts: Order[],
   title: string,
-  page: number,}
+  page: number,
+  isClear: boolean,
+}
 

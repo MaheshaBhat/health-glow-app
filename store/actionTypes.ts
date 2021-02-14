@@ -10,7 +10,7 @@ interface setApiStatusAction {
 
 interface setDataListAction {
     type: typeof SET_DATA,
-    payload: { page: number, totalCount: number, products: Product[], aggregations: Aggregation[], sorts: Sort[], title: string, sortBy: Order, selectedFilter: string[], isFilter?: boolean },
+    payload: { page: number, totalCount: number, products: Product[], aggregations: Aggregation[], sorts: Sort[], title: string, sortBy: Order, selectedFilter: string[], isFilter?: boolean, isClear?: boolean },
 }
 
 interface clearFilterAction {

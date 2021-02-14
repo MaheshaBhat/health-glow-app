@@ -9,7 +9,7 @@ import { View, Text } from '../Themed';
 const leftMenuConfig = [
   'Home',
   'Shop',
-  'Skin Expert',
+  'Brands',
   'Find Our Store',
   'About H&G',
   'Contact US',
@@ -27,6 +27,8 @@ export default function DrawerContent({
         navigation.navigate('Home', { screen: 'Home' });
       } else if (index === 1) {
         navigation.navigate('Home', { screen: 'Shop' });
+      } else if (index === 2) {
+        navigation.navigate('Root');
       } else if (index === 6) {
         setThemeType(theme.dark ? 'light' : 'dark');
       }

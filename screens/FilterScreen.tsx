@@ -27,8 +27,8 @@ const equals = function (arr1, arr2) {
   );
 };
 
-export default function FilterScreen({ navigation, route }: any) {
-  const resetRef = useRef(route.params as any);
+export default function FilterScreen({ navigation }: any) {
+  // const resetRef = useRef(route.params as any);
   const { theme } = useContext<contextType>(AppContext);
   const sortFilter = useSelector(getSortFilter);
   const aggregations = useSelector(getAggregation);
@@ -40,12 +40,14 @@ export default function FilterScreen({ navigation, route }: any) {
   const [selectedFilter, setSelectedFilterItem] = useState<string[]>(
     sortFilter.selectedFilter
   );
+  const isClear = useSelector((state) => state.isClear);
   const dispatch = useDispatch();
 
   const setToDefault = useCallback(
     (selectedFilterArg) => {
       setFilter(aggregations[0]?.name);
       setCurrentBucket([...aggregations[0]?.buckets]);
+      multiSelRef.current = aggregations[0]?.isForMultiSelection;
       setSelectedFilterItem(selectedFilterArg);
     },
     [aggregations]
@@ -56,20 +58,36 @@ export default function FilterScreen({ navigation, route }: any) {
       multiSelRef.current = isForMultiSelection;
       curSelection.current = name;
 
-      await dispatch(fetchList(1, sortFilter.sortBy, selectedFilter, true));
+      await dispatch(
+        fetchList(1, sortFilter.sortBy, selectedFilter, true, false)
+      );
     },
     [dispatch, selectedFilter, sortFilter.sortBy]
   );
 
+  // clear all
+  // useEffect(() => {
+  //   if (resetRef.current) {
+  //     curIndexRef.current = 0;
+  //     setToDefault([]);
+  //     resetRef.current = false;
+  //   }
+  // }, [resetRef, setToDefault]);
+
   useEffect(() => {
-    curIndexRef.current = aggregations.findIndex(
-      (ag) => ag.name === curSelection.current
-    );
-    curIndexRef.current = curIndexRef.current !== -1 ? curIndexRef.current : 0;
-    setFilter(aggregations[curIndexRef.current]?.name);
-    setCurrentBucket([...aggregations[curIndexRef.current]?.buckets]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [aggregations, navigation, setToDefault]);
+    if (!isClear) {
+      curIndexRef.current = aggregations.findIndex(
+        (ag) => ag.name === curSelection.current
+      );
+      curIndexRef.current =
+        curIndexRef.current !== -1 ? curIndexRef.current : 0;
+      setFilter(aggregations[curIndexRef.current]?.name);
+      setCurrentBucket([...aggregations[curIndexRef.current]?.buckets]);
+    } else {
+      curIndexRef.current = 0;
+      setToDefault([]);
+    }
+  }, [aggregations, navigation, setToDefault, isClear]);
 
   // on focus set to default values
   useEffect(() => {
@@ -78,14 +96,6 @@ export default function FilterScreen({ navigation, route }: any) {
     );
     return unsubscribe;
   }, [navigation, setToDefault, sortFilter.selectedFilter]);
-
-  // clear all
-  useEffect(() => {
-    if (resetRef.current) {
-      setToDefault([]);
-      resetRef.current = false;
-    }
-  }, [resetRef, setToDefault]);
 
   // useEffect(() => {
   //   async function update() {

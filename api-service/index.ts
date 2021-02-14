@@ -43,11 +43,11 @@ async function fetchListService(page: number, dispatch: any, sortBy?: Order, sel
   return res?.data;
 }
 
-export const fetchList = (page: number, sortBy?: Order, selectedFilter?: string[], isFilter?: boolean) => {
+export const fetchList = (page: number, sortBy?: Order, selectedFilter?: string[], isFilter?: boolean, isClear?:boolean) => {
   return (dispatch: any) => {
     return fetchListService(page, dispatch, sortBy, selectedFilter).then(
       (res) => {
-        dispatch(setDataList(page, res, sortBy, selectedFilter, isFilter));
+        dispatch(setDataList(page, res, sortBy, selectedFilter, isFilter, isClear));
       },
       (error) => {
         // console.error(error);

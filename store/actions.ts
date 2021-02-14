@@ -6,9 +6,11 @@ export const setApiStatus = (data: number) => ({
   payload: data
 });
 
-export const setDataList = (page: number, { totalCount, products, aggregations, sorts, title }: { totalCount: number, products: Product[], aggregations: Aggregation[], sorts: Sort[], title: string }, sortBy?: Order, selectedFilter?: string[], isFilter?: boolean) => ({
+interface data { totalCount: number, products: Product[], aggregations: Aggregation[], sorts: Sort[], title: string }
+
+export const setDataList = (page: number, { totalCount, products, aggregations, sorts, title }: data, sortBy?: Order, selectedFilter?: string[], isFilter?: boolean, isClear?: boolean) => ({
   type: SET_DATA,
-  payload: { page, totalCount, products, sortBy, selectedFilter, aggregations, sorts, title, isFilter },
+  payload: { page, totalCount, products, sortBy, selectedFilter, aggregations, sorts, title, isFilter, isClear },
 });
 
 export const clearFilter = (isReset: boolean) => ({

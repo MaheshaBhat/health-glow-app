@@ -22,6 +22,7 @@ const initialState: SystemState = {
   sorts: [],
   title: '',
   page: 0,
+  isClear: false
 };
 
 
@@ -36,11 +37,12 @@ export function productReducer(state = initialState, action: ActionTypes): Syste
       };
     }
     case SET_DATA: {
-      const { page, totalCount, products, sortBy, selectedFilter, aggregations, sorts, title, isFilter } = action.payload;
+      const { page, totalCount, products, sortBy, selectedFilter, aggregations, sorts, title, isFilter, isClear } = action.payload;
       if (isFilter) {
         return {
           ...state,
           aggregations: [...(aggregations || [])],
+          isClear: !!isClear
         };
       }
       let mergedProducts = products || [];
@@ -53,10 +55,23 @@ export function productReducer(state = initialState, action: ActionTypes): Syste
       if (sorts?.length) {
         newSorts = sorts.map((r) => r.orders).flat();
       }
+      if (page === 1) {
+        return {
+          ...state,
+          products: mergedProducts,
+          sorts: newSorts,
+          aggregations,
+          totalCount,
+          title,
+          sortBy,
+          selectedFilter,
+          page,
+          isClear: !!isClear
+        };
+      }
       return {
         ...state,
         products: mergedProducts,
-        aggregations,
         sorts: newSorts,
         totalCount,
         title,

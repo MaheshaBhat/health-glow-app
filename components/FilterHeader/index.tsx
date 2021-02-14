@@ -25,7 +25,7 @@ const FilterHeader = ({ scene }: any) => {
         <Text>Filter By</Text>
         <TouchableOpacity
           onPress={async () => {
-            await dispatch(fetchList(1, sortBy, []));
+            await dispatch(fetchList(1, sortBy, [],false, true));
             navigation.setParams({ reset: true });
           }}
         >
