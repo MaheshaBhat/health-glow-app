@@ -21,7 +21,6 @@ import Icon from '../components/Icon';
 import SubHeader from '../components/SubHeader';
 import { View } from '../components/Themed';
 import FilterScreen from '../screens/FilterScreen';
-import Header from '../components/Header';
 import FilterHeader from '../components/FilterHeader';
 import DrawerContent from '../components/DrawerContent';
 import SearchScreen from '../screens/SearchScreen';
@@ -37,7 +36,7 @@ export default function Navigation({
 }) {
   const { theme } = useContext(AppContext);
   return (
-    <NavigationContainer linking={LinkingConfiguration} theme={theme}>
+    <NavigationContainer theme={theme}>
       <DrawerNavigator />
     </NavigationContainer>
   );
@@ -137,6 +136,7 @@ function RootNavigator() {
         headerShown: true,
         header: (props) => <SubHeader {...props} />
       }}
+      initialRouteName="Products"
     >
       <Stack.Screen name="Products" component={ProductsScreen} />
       <Stack.Screen

@@ -28,7 +28,7 @@ export default function DrawerContent({
       } else if (index === 1) {
         navigation.navigate('Home', { screen: 'Shop' });
       } else if (index === 2) {
-        navigation.navigate('Root');
+        navigation.navigate('Root', { screen: 'Products' });
       } else if (index === 6) {
         setThemeType(theme.dark ? 'light' : 'dark');
       }

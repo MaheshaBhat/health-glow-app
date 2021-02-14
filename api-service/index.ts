@@ -6,7 +6,7 @@ import { Order } from '../store/types';
 const getUrl = (page: number, url: string, sortBy?: Order, selectedFilter?: string[]) => {
   let searchParams: string = `${url}&page=${20 * (page - 1)}:20`;
   if (sortBy?.key) {
-    searchParams += `&${new URLSearchParams({ 'sort': `${sortBy.key}:${sortBy.order}` }).toString()}`;
+    searchParams += `&sort=${sortBy.key}:${sortBy.order}`;
   }
   if (selectedFilter?.length) {
     const newfilter = selectedFilter.map((ele) => {
