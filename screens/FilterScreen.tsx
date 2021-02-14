@@ -90,6 +90,7 @@ export default function FilterScreen({ navigation }: any) {
       curIndexRef.current = 0;
       setToDefault([], 0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aggregations, navigation, setToDefault, isClear]);
 
   // on focus set to default values
@@ -170,9 +171,20 @@ export default function FilterScreen({ navigation }: any) {
                     setSelectedFilterItem([...selected]);
                   }}
                 >
-                  <View style={{ flexDirection: 'row' }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: '85%',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start'
+                    }}
+                  >
                     <Text>{text}</Text>
-                    {showDocCount && <Text>{`  (${docCount})`}</Text>}
+                    {showDocCount && (
+                      <View>
+                        <Text>{`  (${docCount})`}</Text>
+                      </View>
+                    )}
                   </View>
                   <Ionicons
                     name={
@@ -194,7 +206,7 @@ export default function FilterScreen({ navigation }: any) {
         style={styles.submitContainer}
         onPress={async () => {
           await dispatch(fetchList(1, sortFilter.sortBy, selectedFilter));
-          setToDefault([],0);
+          setToDefault([], 0);
           navigation.navigate('Root');
         }}
       >

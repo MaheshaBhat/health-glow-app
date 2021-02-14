@@ -6,7 +6,7 @@ import { Order } from '../store/types';
 const getUrl = (page: number, url: string, sortBy?: Order, selectedFilter?: string[]) => {
   let searchParams: string = `${url}&page=${20 * (page - 1)}:20`;
   if (sortBy?.key) {
-    searchParams += `&${new URLSearchParams({ 'sort': `${sortBy.key}:${sortBy.order}` }).toString()}`;
+    searchParams += `&sort=${sortBy.key}:${sortBy.order}`;
   }
   if (selectedFilter?.length) {
     const newfilter = selectedFilter.map((ele) => {
@@ -43,7 +43,7 @@ async function fetchListService(page: number, dispatch: any, sortBy?: Order, sel
   return res?.data;
 }
 
-export const fetchList = (page: number, sortBy?: Order, selectedFilter?: string[], isFilter?: boolean, isClear?:boolean) => {
+export const fetchList = (page: number, sortBy?: Order, selectedFilter?: string[], isFilter?: boolean, isClear?: boolean) => {
   return (dispatch: any) => {
     return fetchListService(page, dispatch, sortBy, selectedFilter).then(
       (res) => {

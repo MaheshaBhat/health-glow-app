@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList, Platform, FlatListProps } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 // import { useHeaderHeight } from '@react-navigation/stack';
 import Constants from 'expo-constants';
@@ -25,9 +25,11 @@ export default function ProductScreen() {
   const dispatch = useDispatch();
   const products = useSelector(getProducts);
   const totalCount = useSelector(getTotalCount);
-  const page = useRef(1);
   const onEndReachedCalledDuringMomentum = useRef(true);
   const { sortBy, selectedFilter } = useSelector(getSortFilter);
+  const pageNum = useSelector((state) => state.page);
+  const page = useRef(pageNum);
+  // const flatListRef = useRef<FlatListProps>(null);
 
   useEffect(() => {
     onEndReachedCalledDuringMomentum.current = true;
@@ -35,6 +37,13 @@ export default function ProductScreen() {
     dispatch(fetchList(page.current, sortBy, []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    page.current = pageNum;
+    // if (flatListRef) {
+    //   flatListRef.current.scrollsToTop();
+    // }
+  }, [pageNum]);
 
   const renderItem = useCallback(
     ({ item, index }) => (
@@ -58,7 +67,7 @@ export default function ProductScreen() {
   const onEndReached = useCallback(
     ({ distanceFromEnd }) => {
       if (
-        !onEndReachedCalledDuringMomentum.current &&
+        (!onEndReachedCalledDuringMomentum.current || Platform.OS === 'web') &&
         page.current * 20 <= totalCount
       ) {
         page.current += page.current;
@@ -86,6 +95,7 @@ export default function ProductScreen() {
         extraData={numOfCol}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.75}
+        scrollsToTop={pageNum === 1}
         onMomentumScrollBegin={() => {
           onEndReachedCalledDuringMomentum.current = false;
         }}

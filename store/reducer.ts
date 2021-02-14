@@ -21,7 +21,7 @@ const initialState: SystemState = {
   }],
   sorts: [],
   title: '',
-  page: 0,
+  page: 1,
   isClear: false
 };
 

@@ -137,6 +137,7 @@ function RootNavigator() {
         headerShown: true,
         header: (props) => <SubHeader {...props} />
       }}
+      initialRouteName="Products"
     >
       <Stack.Screen name="Products" component={ProductsScreen} />
       <Stack.Screen
@@ -144,11 +145,11 @@ function RootNavigator() {
         component={SearchScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }

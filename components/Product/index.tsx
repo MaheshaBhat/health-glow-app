@@ -61,7 +61,9 @@ export default function ProductItem({ prod, index, height }: Props) {
         <ImageItem url={prod.skuImageUrl} />
       </View>
       <View style={styles.skuNameStyle}>
-        <Text>{prod.skuName}</Text>
+        <Text style={{ fontSize: 13 }} ellipsizeMode="tail">
+          {prod.skuName}
+        </Text>
       </View>
       <View style={styles.footer}>
         <View style={styles.priceStyle}>
@@ -134,11 +136,11 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   skuNameStyle: {
-    height: '25%',
+    height: '27%',
     width: '100%'
   },
   footer: {
-    height: '10%',
+    height: '8%',
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between'

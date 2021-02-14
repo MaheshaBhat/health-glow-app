@@ -10,9 +10,9 @@ export default function SvgComponent(props) {
       <G
         id="Page-1"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
-        fill-rule="evenodd"
+        fillRule="evenodd"
       >
         <G id="H" fill="#F37920">
           <Path
