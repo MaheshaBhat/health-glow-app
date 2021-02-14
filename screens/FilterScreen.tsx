@@ -44,11 +44,11 @@ export default function FilterScreen({ navigation }: any) {
   const dispatch = useDispatch();
 
   const setToDefault = useCallback(
-    (selectedFilterArg) => {
-      setFilter(aggregations[0]?.name);
-      setCurrentBucket([...aggregations[0]?.buckets]);
-      multiSelRef.current = aggregations[0]?.isForMultiSelection;
-      setSelectedFilterItem(selectedFilterArg);
+    (selectedFilterArg, currentIndex) => {
+      setFilter(aggregations[currentIndex]?.name);
+      setCurrentBucket([...aggregations[currentIndex]?.buckets]);
+      multiSelRef.current = aggregations[currentIndex]?.isForMultiSelection;
+      setSelectedFilterItem([...selectedFilterArg]);
     },
     [aggregations]
   );
@@ -79,20 +79,23 @@ export default function FilterScreen({ navigation }: any) {
       curIndexRef.current = aggregations.findIndex(
         (ag) => ag.name === curSelection.current
       );
-      curIndexRef.current =
-        curIndexRef.current !== -1 ? curIndexRef.current : 0;
-      setFilter(aggregations[curIndexRef.current]?.name);
-      setCurrentBucket([...aggregations[curIndexRef.current]?.buckets]);
+      if (curIndexRef.current !== -1) {
+        // setFilter(aggregations[curIndexRef.current]?.name);
+        // setCurrentBucket([...aggregations[curIndexRef.current]?.buckets]);
+        setToDefault(selectedFilter, curIndexRef.current);
+      } else {
+        setToDefault(selectedFilter, 0);
+      }
     } else {
       curIndexRef.current = 0;
-      setToDefault([]);
+      setToDefault([], 0);
     }
   }, [aggregations, navigation, setToDefault, isClear]);
 
   // on focus set to default values
   useEffect(() => {
     const unsubscribe = navigation.addListener('state', () =>
-      setToDefault(sortFilter.selectedFilter)
+      setToDefault(sortFilter.selectedFilter, 0)
     );
     return unsubscribe;
   }, [navigation, setToDefault, sortFilter.selectedFilter]);
@@ -191,7 +194,7 @@ export default function FilterScreen({ navigation }: any) {
         style={styles.submitContainer}
         onPress={async () => {
           await dispatch(fetchList(1, sortFilter.sortBy, selectedFilter));
-          setToDefault([]);
+          setToDefault([],0);
           navigation.navigate('Root');
         }}
       >
